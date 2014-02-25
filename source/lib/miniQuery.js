@@ -4,6 +4,7 @@ SweetSelector = {
   }
 }
 
+
 DOM = {
   hide: function(element) {
   var thing = SweetSelector.select(element)[0]
@@ -26,5 +27,23 @@ DOM = {
   }
 }
 
+EventDisptacher = {
+  bitchIsClicked: function(element, toDoFunction) {
+    var thing = SweetSelector.select(element)[0]
+    thing.onclick = function() {
+     toDoFunction()
+    }
+  },
+  on: function(element, customEvent, toDoFunction){
+    var thing = SweetSelector.select(element)[0]
+    thing.addEventListener(customEvent, toDoFunction, false)
+  },
+  trigger: function(element, customEvent) {
+    var thing = SweetSelector.select(element)[0]
+    thing.dispatchEvent(customEvent)
+  }
+}
+
 SweetSelector
 DOM
+EventDisptacher

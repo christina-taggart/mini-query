@@ -93,8 +93,12 @@ var miniFunctions = (function(){
 var miniQuery = function(query) {
   return SweetSelector.select(query)
 }
-
 miniQuery.ajax = miniFunctions.request;
+
+var $ = function(query) {
+  return SweetSelector.select(query)
+}
+$.ajax = miniFunctions.request;
 
 NodeList.prototype.hide = miniFunctions.hide;
 NodeList.prototype.show = miniFunctions.show;

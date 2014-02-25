@@ -39,5 +39,13 @@ var DOM = {
     else {
       element.className = className;
     }
+  },
+
+  removeClass: function(selector){
+    element = SweetSelector.select(selector);
+    element.className = "";
   }
+
 }
+
+/* EventDispatcher Module: */

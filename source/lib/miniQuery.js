@@ -19,9 +19,8 @@ var SweetSelector = {
 }
 
 /* DOM Module: hide and show elements, add and remove Class names */
-
 var DOM = {
-  hide: function(selector){
+  hide: function(selector) {
     element = SweetSelector.select(selector);
     element.style.visibility='hidden';
   },
@@ -31,7 +30,7 @@ var DOM = {
     element.style.visibility='visible';
   },
 
-  addClass: function(selector, className){
+  addClass: function(selector, className) {
     element = SweetSelector.select(selector);
     if (element.className) {
       element.className += " " + className;
@@ -41,11 +40,37 @@ var DOM = {
     }
   },
 
-  removeClass: function(selector){
+  removeClass: function(selector) {
     element = SweetSelector.select(selector);
     element.className = "";
   }
 
 }
 
-/* EventDispatcher Module: */
+/* EventDispatcher Module: binds events to elements and dispatches them */
+var EventDispatcher = (function() {
+  var events = []
+
+  var _findEvent = function(eventName) {
+    for (i=0; i < events.length; i++) {
+      if (events[i].type === eventName) {
+        return events[i];
+      }
+    }
+  }
+
+  return {
+    on: function(selector, eventName, callback) {
+      element = SweetSelector.select(selector);
+      event = new Event(eventName);
+      events.push(event);
+      element.addEventListener(eventName, callback, false);
+    },
+
+    trigger: function(selector, eventName) {
+      element = SweetSelector.select(selector);
+      event = _findEvent(eventName);
+      element.dispatchEvent(event);
+    }
+  }
+}())

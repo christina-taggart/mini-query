@@ -65,3 +65,16 @@ var DOM = (function(){
     }
   };
 })();
+
+var EventDispatcher = (function() {
+  // private vars and funcs
+  return {
+    // public vars and funcs
+    on: function() {
+
+    },
+    trigger: function() {
+      
+    }
+  };
+})();

@@ -13,6 +13,16 @@ DOM = {
   show: function(element) {
     var thing = SweetSelector.select(element)[0]
     thing.style.visibility = 'visible'
+  },
+
+  addClass: function(element, className) {
+    var thing = SweetSelector.select(element)[0]
+    thing.classList.add(className)
+  },
+
+  removeClass: function(element, className) {
+    var thing = SweetSelector.select(element)[0]
+    thing.classList.remove(className)
   }
 }
 

@@ -49,32 +49,39 @@ var DOM = {
 
 /* EventDispatcher Module: binds events to elements and dispatches them */
 var EventDispatcher = (function() {
-  var events = []
+
+  var subscriptions = []
 
   var _select = function(selector) {
     return SweetSelector.select(selector);
   }
 
-  var _findEvent = function(eventName) {
-    for (i=0; i < events.length; i++) {
-      if (events[i].type === eventName) {
-        return events[i];
+  var Subscription = function(selector, eventName, callback) {
+    this.element = _select(selector);
+    this.event = new Event(eventName);
+    this.callback = callback;
+  }
+
+  var _subscribe = function(selector, eventName, callback) {
+    newSubscription = new Subscription(selector, eventName, callback);
+    subscriptions.push(newSubscription);
+  }
+
+  var _publish = function(eventName) {
+    for (i=0; i < subscriptions.length; i++) {
+      if (subscriptions[i].event.type === eventName) {
+        subscriptions[i].callback.call();
       }
     }
   }
 
   return {
     on: function(selector, eventName, callback) {
-      element = _select(selector)
-      event = new Event(eventName);
-      events.push(event);
-      element.addEventListener(eventName, callback, false);
+      _subscribe(selector, eventName, callback);
     },
 
-    trigger: function(selector, eventName) {
-      element = _select(selector)
-      event = _findEvent(eventName);
-      element.dispatchEvent(event);
+    trigger: function(eventName) {
+      _publish(eventName);
     }
   }
 }())

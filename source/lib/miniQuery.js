@@ -9,49 +9,50 @@ var SweetSelector = {
 };
 
 var Dom = {
-  hide: function(query) {
-    var elements = SweetSelector.select(query);
-    for(var i = 0; i < elements.length; i++) {
-      elements[i].style.display = 'none';
+
+  hide: function() {
+    for(var i = 0; i < this.length; i++) {
+      this[i].style.display = 'none';
     }
+    return this;
   },
 
-  show: function(query) {
-    var elements = SweetSelector.select(query);
-    for(var i = 0; i < elements.length; i++) {
-      elements[i].style.display = '';
+  show: function() {
+    for(var i = 0; i < this.length; i++) {
+      this[i].style.display = '';
     }
+    return this;
   },
 
-  addClass: function(query, klass) {
-    var elements = SweetSelector.select(query);
-    for(var i = 0; i < elements.length; i++) {
-      elements[i].className += ' ' + klass;
+  addClass: function(klass) {
+    for(var i = 0; i < this.length; i++) {
+      this[i].className += ' ' + klass;
     }
+    return this;
   },
 
-  removeClass: function(query, klass) {
-    var elements = SweetSelector.select(query);
-    for(var i = 0; i < elements.length; i++) {
-      var newClassName = elements[i].className.replace(klass, '');
-      elements[i].className = newClassName;
+  removeClass: function(klass) {
+    for(var i = 0; i < this.length; i++) {
+      var newClassName = this[i].className.replace(klass, '');
+      this[i].className = newClassName;
     }
+    return this;
   }
 }
 
 var EventDispatcher = {
-  on: function(observer, event, callback) {
-    var elements = SweetSelector.select(observer);
-    for(var i = 0; i < elements.length; i++) {
-      elements[i][event] = callback;
+  on: function(event, callback) {
+    for(var i = 0; i < this.length; i++) {
+      this[i][event] = callback;
     }
+    return this;
   },
 
-  trigger: function(observer, event) {
-    var elements = SweetSelector.select(observer);
-    for(var i = 0; i < elements.length; i++) {
-      elements[i][event].call();
+  trigger: function(event) {
+    for(var i = 0; i < this.length; i++) {
+      this[i][event].call();
     }
+    return this;
   }
 
 }
@@ -70,9 +71,7 @@ var AjaxWrapper = (function() {
   }
 }())
 
-
-var miniQuery = (function(){
-  var _select      = SweetSelector.select;
+var miniFunctions = (function(){
   var _hide        = Dom.hide;
   var _show        = Dom.show;
   var _addClass    = Dom.addClass;
@@ -81,7 +80,6 @@ var miniQuery = (function(){
   var _trigger     = EventDispatcher.trigger;
   var _request     = AjaxWrapper.request;
   return {
-    select:      _select,
     hide:        _hide,
     show:        _show,
     addClass:    _addClass,
@@ -91,3 +89,16 @@ var miniQuery = (function(){
     request:     _request
   }
 }())
+
+var miniQuery = function(query) {
+  return SweetSelector.select(query)
+}
+
+miniQuery.ajax = miniFunctions.request;
+
+NodeList.prototype.hide = miniFunctions.hide;
+NodeList.prototype.show = miniFunctions.show;
+NodeList.prototype.addClass = miniFunctions.addClass;
+NodeList.prototype.removeClass = miniFunctions.removeClass;
+NodeList.prototype.on = miniFunctions.on;
+NodeList.prototype.trigger = miniFunctions.trigger;

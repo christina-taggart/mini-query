@@ -51,6 +51,10 @@ var DOM = {
 var EventDispatcher = (function() {
   var events = []
 
+  var _select = function(selector) {
+    return SweetSelector.select(selector);
+  }
+
   var _findEvent = function(eventName) {
     for (i=0; i < events.length; i++) {
       if (events[i].type === eventName) {
@@ -61,14 +65,14 @@ var EventDispatcher = (function() {
 
   return {
     on: function(selector, eventName, callback) {
-      element = SweetSelector.select(selector);
+      element = _select(selector)
       event = new Event(eventName);
       events.push(event);
       element.addEventListener(eventName, callback, false);
     },
 
     trigger: function(selector, eventName) {
-      element = SweetSelector.select(selector);
+      element = _select(selector)
       event = _findEvent(eventName);
       element.dispatchEvent(event);
     }

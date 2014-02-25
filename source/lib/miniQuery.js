@@ -55,3 +55,29 @@ var EventDispatcher = {
   }
 
 }
+
+var AjaxWrapper = (function() {
+  var request = new XMLHttpRequest();
+  return {
+    request: function(params) {
+      request.onload = function(requestEvent) {
+        params.success(requestEvent.currentTarget.responseText)
+      };
+      request.onerror = params.fail;
+      request.open(params.type, params.url);
+      request.send();
+    }
+  }
+}())
+
+
+AjaxWrapper.request({
+ url: 'index.html',
+ type: 'GET',
+ success: function(data) {
+    console.log('success:', data)
+ },
+ fail: function() {
+  console.log("request failed")
+ }
+});

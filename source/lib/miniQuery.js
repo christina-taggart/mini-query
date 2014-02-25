@@ -71,13 +71,23 @@ var AjaxWrapper = (function() {
 }())
 
 
-AjaxWrapper.request({
- url: 'index.html',
- type: 'GET',
- success: function(data) {
-    console.log('success:', data)
- },
- fail: function() {
-  console.log("request failed")
- }
-});
+var miniQuery = (function(){
+  var _select      = SweetSelector.select;
+  var _hide        = Dom.hide;
+  var _show        = Dom.show;
+  var _addClass    = Dom.addClass;
+  var _removeClass = Dom.removeClass;
+  var _on          = EventDispatcher.on;
+  var _trigger     = EventDispatcher.trigger;
+  var _request     = AjaxWrapper.request;
+  return {
+    select:      _select,
+    hide:        _hide,
+    show:        _show,
+    addClass:    _addClass,
+    removeClass: _removeClass,
+    on:          _on,
+    trigger:     _trigger,
+    request:     _request
+  }
+}())

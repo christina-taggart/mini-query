@@ -87,3 +87,26 @@ var EventDispatcher = (function(){
   }
 })()
 
+var AjaxWrapper = (function(){
+  return {
+    request: function(options){
+      var url = options['url']
+      var type = options['type']
+      var success = options['success']
+      var fail = options['fail']
+      var req = new XMLHttpRequest();
+      req.open(type, url, true);
+      req.send();
+      req.addEventListener('load', function(){
+        if (req.status === 200){
+          success(req.response, req.status, req)
+        }
+        else
+        {
+          fail(req, req.status, req.statusText)
+        }
+      })
+    }
+  }
+})()
+

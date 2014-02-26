@@ -45,3 +45,18 @@ var DOM = (function() {
     }
   }
 })();
+
+var AjaxWrapper = (function() {
+
+  return {
+    request: function(args)
+    var myJax = new XMLHttpRequest();
+    myJax.onload = args['success']
+    myJax.onfail = args['failure']
+    myJax.open(args['action'], args['url'])
+    myJax.send();
+    }
+
+    }
+
+})();

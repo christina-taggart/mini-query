@@ -5,12 +5,12 @@
 /* SweetSelector module: select elements within the DOM! */
 var SweetSelector = {
   select: function(selector) {
-    var choppedSelector = selector.slice(1, selector.length)
+    var slicedSelector = selector.slice(1)
     if (selector[0] === "#") {
-      return document.getElementById(choppedSelector);
+      return document.getElementById(slicedSelector);
     }
     else if (selector[0] === ".") {
-      return document.getElementsByClassName(choppedSelector)[0];
+      return document.getElementsByClassName(slicedSelector)[0];
     }
     else {
       return document.getElementsByTagName(selector)[0];
@@ -76,12 +76,25 @@ var EventDispatcher = (function() {
   }
 
   return {
-    on: function(selector, eventName, callback) {
-      _subscribe(selector, eventName, callback);
-    },
+    on: _subscribe,
 
-    trigger: function(eventName) {
-      _publish(eventName);
-    }
+    trigger: _publish
+  }
+}())
+
+/* AjaxWrapper Module: sends an ajax request to the url and calls the success or fail callback */
+
+var AjaxWrapper = (function(){
+  var ponyRainbowMagic = new XMLHttpRequest();
+
+  var _request = function(args){
+    ponyRainbowMagic.open(args.type, args.url, true);
+    ponyRainbowMagic.onload = args.success
+    ponyRainbowMagic.onerror = args.fail
+    ponyRainbowMagic.send();
+  }
+
+  return {
+    request: _request
   }
 }())

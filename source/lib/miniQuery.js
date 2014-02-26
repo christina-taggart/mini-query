@@ -38,3 +38,16 @@ var EventDispatcher = {
     }
   }
 }
+
+var AjaxWrapper = {
+  request: function(url, type) {
+    var aReq = new XMLHttpRequest();
+    aReq.open(type, url, true);
+    aReq.onreadystatechange = function() {
+      if (aReq.readyState != 4 || aReq.status != 200) {
+        console.log(aReq.responseText);
+      }
+    }
+    aReq.send();
+  }
+}

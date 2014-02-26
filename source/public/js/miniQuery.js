@@ -27,18 +27,38 @@ var miniQuery = (function(){
           default:
             return selectElement(query);
         }
-      };
+      }; 
 
+    var results = _select(query);
 
-    return _select(query);
+    if (results instanceof Node)
+      return new MiniQuery(results);
+    else if (results instanceof NodeList) {
+      var arrayQ = []
+      for(var i = 0; i < results.length ; i++) {
+        arrayQ.push( new MiniQuery(results[i]) )
+      }
+      return arrayQ;
+    }
+  }
+
+  var MiniQuery = function(element) {
+    this.element = element;
+  }
+
+  MiniQuery.prototype = {
+    show: function() {
+      DOM.show(this.element);
+    },
+    hide: function() {
+      DOM.hide(this.element);
+    }
+
   }
 
   var DOM = (
     function(){
-        var _hide = function(query){
-          element = SweetSelector.select(query);
-          if (element instanceof NodeList)
-            element = element[0];
+        var _hide = function(element){
           if(!element.id)
             element.id = CACHE.counter++;
           style = window.getComputedStyle(element);
@@ -46,10 +66,7 @@ var miniQuery = (function(){
           element.style.display = 'none';
         }
 
-        var _show = function(query){
-          element = SweetSelector.select(query);
-          if (element instanceof NodeList)
-            element = element[0];
+        var _show = function(element){
           oldDisplayValue = CACHE.previous_displays[element.id];
           element.style.display = oldDisplayValue;
         }

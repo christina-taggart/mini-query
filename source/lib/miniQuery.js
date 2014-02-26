@@ -66,3 +66,24 @@ var DOM = (function(){
     }
   }
 })()
+
+
+var EventDispatcher = (function(){
+
+  return {
+    on: function(element, eventName, action){
+      var elements = SweetSelector.select(element);
+      for (var i=0; i<elements.length; i++){
+        elements[i]['on'+eventName] = action;
+      }
+    },
+
+    trigger: function(element, eventName){
+      var elements = SweetSelector.select(element);
+      for (var i=0; i<elements.length; i++){
+        elements[i]['on'+eventName]();
+      }
+    }
+  }
+})()
+

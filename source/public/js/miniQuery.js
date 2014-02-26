@@ -81,7 +81,6 @@ EventDispatcher = (
     }
     var _on = function(selector, event, handler) {
       _perform_for_each(selector, function() {
-        debugger
         this["on"+event] = handler;
       });
     };
@@ -101,3 +100,25 @@ EventDispatcher = (
     }
   }()
 )
+
+AjaxWrapper = (function(){
+  var _request = function(options) {
+    var oReq = new XMLHttpRequest();
+    function handleLoad() {
+      if (event.target.status == 422)
+        options.fail();
+      else
+        options.success();
+    }
+
+    oReq.open(options.type, options.url, true);
+    oReq.addEventListener("load", handleLoad, false);
+    oReq.addEventListener("error", options.fail, false);
+    oReq.send();
+  };
+  return {
+    request: function(options) {
+      _request(options);
+    }
+  };
+}())

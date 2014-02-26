@@ -16,3 +16,9 @@ end
 get '/info' do
   Demo.new(self).info
 end
+
+get '/lamer' do
+  status 422
+
+  erb :index
+end

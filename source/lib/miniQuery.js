@@ -9,7 +9,7 @@ var SweetSelector = (function() {
 
       if (target.charAt(0) == "#") {
         target = target.replace("#", "");
-        return document.getElementById(target);
+        return [document.getElementById(target)];
       } else if (target.charAt(0) == ".") {
         target = target.slice(1)
         target = target.replace(".", " ")
@@ -24,26 +24,17 @@ var SweetSelector = (function() {
 
 var DOM = (function(){
   // private vars and funcs
-  var wrapElementWithArray = function(element) {
-    if (element.toString() != "[object NodeList]") {
-      return [element];
-    } else {
-      return element;
-    }
-  }
 
   return {
   // public vars and funcs
     hide: function(target){
       target = SweetSelector.select(target)
-      target = wrapElementWithArray(target)
       for(i=0; i < target.length; i++){
         target[i].style.display = "none";
       }
     },
     show: function(target) {
       target = SweetSelector.select(target)
-      target = wrapElementWithArray(target)
       for(i=0; i < target.length; i++) {
         target[i].style.display = "";
       }
@@ -51,14 +42,12 @@ var DOM = (function(){
     // ex: DOM.addClass('.klass', 'improved-klass')
     addClass: function(target, nameOfClass) {
       target = SweetSelector.select(target)
-      target = wrapElementWithArray(target)
       for(i=0; i < target.length; i++) {
         target[i].className = target[i].className + " " + nameOfClass;
       }
     },
     removeClass: function(target, nameOfClass) {
       target = SweetSelector.select(target)
-      target = wrapElementWithArray(target)
       for(i=0; i < target.length; i++) {
         target[i].className = target[i].className.replace(nameOfClass, "")
       }
@@ -68,13 +57,34 @@ var DOM = (function(){
 
 var EventDispatcher = (function() {
   // private vars and funcs
+  var userCreatedEvents = []
+  var validCustomEvent = function(customEventName) {
+    for(i=0; i < userCreatedEvents.length; i++) {
+      if (userCreatedEvents[i].type == customEventName) {
+        return userCreatedEvents[i];
+      }
+    }
+  }
+
   return {
     // public vars and funcs
-    on: function() {
-
+    on: function(target, customEventName) {
+      target = SweetSelector.select(target)
+      var customEvent = new Event(customEventName)
+      userCreatedEvents.push(customEvent)
+      for(i=0; i < target.length; i++) {
+        target[i].addEventListener(customEvent, function() {
+          alert('yep, it was triggered');
+          console.log('something should be happening here');
+        })
+      }
     },
-    trigger: function() {
-      
+    trigger: function(target, customEventName) {
+      target = SweetSelector.select(target);
+      var customEvent = validCustomEvent(customEventName);
+      for(i=0; i < target.length; i++) {
+        target[i].dispatchEvent(customEvent);
+      }
     }
   };
 })();

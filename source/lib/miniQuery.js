@@ -55,35 +55,28 @@ var DOM = (function(){
   };
 })();
 
+// ex: EventDispatcher.on('.klass', 'dogecoin');
+var userCreatedEvents = []
 var EventDispatcher = (function() {
-  // private vars and funcs
-  var userCreatedEvents = []
-  var validCustomEvent = function(customEventName) {
-    for(i=0; i < userCreatedEvents.length; i++) {
-      if (userCreatedEvents[i].type == customEventName) {
-        return userCreatedEvents[i];
-      }
-    }
-  }
-
   return {
-    // public vars and funcs
-    on: function(target, customEventName) {
+    on: function(target, eventName) {
       target = SweetSelector.select(target)
-      var customEvent = new Event(customEventName)
-      userCreatedEvents.push(customEvent)
       for(i=0; i < target.length; i++) {
-        target[i].addEventListener(customEvent, function() {
-          alert('yep, it was triggered');
-          console.log('something should be happening here');
+        userCreatedEvents.push(new Event(eventName))
+        target[i].addEventListener(eventName, function(e) {
+          alert('event was triggered!');
         })
       }
     },
-    trigger: function(target, customEventName) {
-      target = SweetSelector.select(target);
-      var customEvent = validCustomEvent(customEventName);
-      for(i=0; i < target.length; i++) {
-        target[i].dispatchEvent(customEvent);
+    trigger: function(target, eventName) {
+      target = SweetSelector.select(target)
+      for (i=0; i < target.length; i++) {
+        for(j=0; j < userCreatedEvents.length; j++) {
+          if (userCreatedEvents[j].type == eventName) {
+            target[i].dispatchEvent(userCreatedEvents[j])
+            break;
+          }
+        }
       }
     }
   };

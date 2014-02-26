@@ -2,6 +2,14 @@
  * minQuery
  */
 
+var _nodeListToArray = function(nl) {
+  return [].slice.call(nl) // taken from: http://stackoverflow.com/questions/5501433/nodelist-object-in-javascript
+  // var a = []
+  // for (var i in nl) { a.push(nl[i]) }
+  // // for (var i=0; i<nl.length; ++i) { a.push(nl[i]) }
+  // return a
+}
+
 var DOM = {
 
    hide: function(searchTerm) {
@@ -17,12 +25,12 @@ var DOM = {
 
     else if (searchTerm[0] === ".") {
      var hideClassNodeList =  document.getElementsByClassName(searchTerm.slice(1, searchTerm.length+1))
-     var hideClassNodeArray = [].slice.call(hideClassNodeList).map(makeHidden);
+     var hideClassNodeArray = _nodeListToArray(hideClassNodeList).map(makeHidden);
     }
 
     else {
       var hideTagNodeList =   document.getElementsByTagName(searchTerm)
-      var hideTagNodeArray = [].slice.call(hideTagNodeList).map(makeHidden);
+      var hideTagNodeArray = _nodeListToArray(hideTagNodeList).map(makeHidden);
     }
   },
 
@@ -39,11 +47,11 @@ var DOM = {
     }
     else if (searchTerm[0] === ".") {
      var showClassNodeList =  document.getElementsByClassName(searchTerm.slice(1, searchTerm.length+1))
-     var showClassNodeArray = [].slice.call(showClassNodeList).map(makeVisible);
+     var showClassNodeArray = _nodeListToArray(showClassNodeList).map(makeVisible);
     }
     else {
      var showTagNodeList =  document.getElementsByTagName(searchTerm)
-     var showTagNodeArray = [].slice.call(showTagNodeList).map(makeVisible);
+     var showTagNodeArray = _nodeListToArray(showTagNodeList).map(makeVisible);
 
     }
   }
@@ -68,3 +76,32 @@ var sweetSelector = (function(){
 }())
 
 
+var eventDispatcher = {
+
+
+
+
+  on: function(selector, action, passFunc){
+
+    var selectedThing = sweetSelector.select(selector)
+    var selectedThingArray = _nodeListToArray(selectedThing)
+
+    for (i=0; i < selectedThingArray.length; i++){
+      // selectedThingArray[i].addEventListener(action, passFunc)
+      selectedThingArray[i][action] = passFunc
+    }
+
+  },
+
+  trigger: function(selector, action){
+
+    // var event_ = new Event(action)
+
+    var selectedThing = sweetSelector.select(selector)
+    var selectedThingArray = _nodeListToArray(selectedThing)
+    for (i=0; i < selectedThingArray.length; i++){
+      selectedThingArray[i][action]()
+    }
+  }
+
+}

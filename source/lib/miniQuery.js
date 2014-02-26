@@ -22,3 +22,19 @@ var DOM = {
     element.style.display = 'initial';
   }
 }
+
+var EventDispatcher = {
+  on: function(tag, eventName, handler) {
+    var elements = SweetSelector.select(tag);
+    for (var i = 0; i < elements.length; i += 1) {
+      elements[i][eventName] = handler
+    }
+  },
+
+  trigger: function(tag, eventName) {
+    var elements = SweetSelector.select(tag);
+    for (var i = 0; i < elements.length; i += 1) {
+      elements[i][eventName]();
+    }
+  }
+}

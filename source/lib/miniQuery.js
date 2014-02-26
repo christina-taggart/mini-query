@@ -2,39 +2,6 @@
  * minQuery
  */
 
-// var SweetSelector = {
-//   select: function(query) {
-//     var first_char = query[0];
-
-//     switch(first_char){
-//       case '#':
-//         return this.selectId(query.substr(1));
-//         break;
-//       case '.':
-//         return this.selectClass(query.substr(1));
-//         break;
-//       default:
-//         return this.selectElement(query);
-//     }
-//   },
-
-//   selectId: function(id_name) {
-//     console.log("selectId");
-//     return document.getElementById(id_name);
-//   },
-
-//   selectClass: function(class_name) {
-//     console.log("selectClass");
-//     return document.getElementsByClassName(class_name);
-//   },
-
-//   selectElement: function(element_name) {
-//     console.log("selectElement");
-//     return document.getElementsByTagName(element_name);
-//   }
-
-// }
-
 var SweetSelector = (function(){
     var selectId = function(id_name) {
       return document.getElementById(id_name);
@@ -103,32 +70,27 @@ CACHE = {
 }
 
 EventDispatcher = (
-  // on: function(selector, event, handler) {
-  //   var elements = SweetSelector.select(selector);
-  //   for(var i = 0; i < elements.length; i++) {
-  //     elements[i]["on"+event] = handler;
-  //   }
-  // },
-  // trigger: function(selector, event) {
-  //   var elements = SweetSelector.select(selector);
-  //   for(var i = 0; i < elements.length; i++) {
-  //     elements[i]["on"+event]();
-  //   }
-  // }
 
   function(){
-    var _on = function(selector, event, handler) {
+
+    var _perform_for_each = function(selector, callback) {
       var elements = SweetSelector.select(selector);
-      for(var i = 0; i < elements.length; i++) {
-        elements[i]["on"+event] = handler;
+      for(var i = 0; i < elements.length; i++){
+        callback.call(elements[i])
       }
+    }
+    var _on = function(selector, event, handler) {
+      _perform_for_each(selector, function() {
+        debugger
+        this["on"+event] = handler;
+      });
     };
     var _trigger = function(selector, event) {
-      var elements = SweetSelector.select(selector);
-      for(var i = 0; i < elements.length; i++) {
-        elements[i]["on"+event]();
-      }
+      _perform_for_each(selector, function() {
+        this["on"+event]();
+      });
     };
+
     return {
       on: function(selector, event, handler){
         _on(selector, event, handler);

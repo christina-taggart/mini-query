@@ -37,17 +37,14 @@
 
 var SweetSelector = (function(){
     var selectId = function(id_name) {
-      console.log("selectId");
       return document.getElementById(id_name);
     };
 
     var selectClass = function(class_name) {
-      console.log("selectClass");
       return document.getElementsByClassName(class_name);
     };
 
     var selectElement = function(element_name) {
-      console.log("selectElement");
       return document.getElementsByTagName(element_name);
     };
     var _select = function(query) {
@@ -105,3 +102,40 @@ CACHE = {
   }
 }
 
+EventDispatcher = (
+  // on: function(selector, event, handler) {
+  //   var elements = SweetSelector.select(selector);
+  //   for(var i = 0; i < elements.length; i++) {
+  //     elements[i]["on"+event] = handler;
+  //   }
+  // },
+  // trigger: function(selector, event) {
+  //   var elements = SweetSelector.select(selector);
+  //   for(var i = 0; i < elements.length; i++) {
+  //     elements[i]["on"+event]();
+  //   }
+  // }
+
+  function(){
+    var _on = function(selector, event, handler) {
+      var elements = SweetSelector.select(selector);
+      for(var i = 0; i < elements.length; i++) {
+        elements[i]["on"+event] = handler;
+      }
+    };
+    var _trigger = function(selector, event) {
+      var elements = SweetSelector.select(selector);
+      for(var i = 0; i < elements.length; i++) {
+        elements[i]["on"+event]();
+      }
+    };
+    return {
+      on: function(selector, event, handler){
+        _on(selector, event, handler);
+      },
+      trigger: function(selector, event) {
+        _trigger(selector, event);
+      }
+    }
+  }()
+)

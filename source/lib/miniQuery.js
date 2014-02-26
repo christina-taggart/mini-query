@@ -20,3 +20,28 @@ var sweetSelector = (function() {
     }
   })();
 
+
+var DOM = (function() {
+
+  return {
+    hide: function(elementYouWant){
+      var element = sweetSelector.select(elementYouWant)
+      element[0].style.display = "none"
+    },
+
+    show: function(elementYouWant) {
+      var element = sweetSelector.select(elementYouWant)
+      element[0].style.display = "block";
+    },
+
+    addClass: function(elementYouWant, classToAdd) {
+      var element = sweetSelector.select(elementYouWant)
+      element[0].classList.add(classToAdd)
+    },
+
+    removeClass: function(elementYouWant, classToRemove) {
+      var element = sweetSelector.select(elementYouWant)
+      element[0].classList.remove(classToRemove)
+    }
+  }
+})();

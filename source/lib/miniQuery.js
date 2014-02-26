@@ -4,45 +4,50 @@ SweetSelector = {
   }
 }
 
-
-DOM = {
-  hide: function(element) {
-  var thing = SweetSelector.select(element)[0]
-  thing.style.visibility='hidden';
-  },
-
-  show: function(element) {
-    var thing = SweetSelector.select(element)[0]
-    thing.style.visibility = 'visible'
-  },
-
-  addClass: function(element, className) {
-    var thing = SweetSelector.select(element)[0]
-    thing.classList.add(className)
-  },
-
-  removeClass: function(element, className) {
-    var thing = SweetSelector.select(element)[0]
-    thing.classList.remove(className)
+var DOM = (function(){
+  var _desiredElement = function(element) {
+    return SweetSelector.select(element)[0];
   }
-}
-
-EventDisptacher = {
-  bitchIsClicked: function(element, toDoFunction) {
-    var thing = SweetSelector.select(element)[0]
-    thing.onclick = function() {
-     toDoFunction()
+  return{
+    hide: function(element) {
+      _desiredElement(element).style.visibility='hidden';
+    },
+    show: function(element) {
+      _desiredElement(element).style.visibility = 'visible'
+    },
+    addClass: function(element, className) {
+      _desiredElement(element).classList.add(className)
+    },
+    removeClass: function(element, className) {
+      _desiredElement(element).classList.remove(className)
     }
-  },
-  on: function(element, customEvent, toDoFunction){
-    var thing = SweetSelector.select(element)[0]
-    thing.addEventListener(customEvent, toDoFunction, false)
-  },
-  trigger: function(element, customEvent) {
-    var thing = SweetSelector.select(element)[0]
-    thing.dispatchEvent(customEvent)
   }
-}
+}())
+
+EventDisptacher = (function() {
+  var _desiredElement = function(element) {
+    return SweetSelector.select(element)[0];
+  }
+  return {
+    on: function(element, customEvent, toDoFunction){
+      _desiredElement(element).addEventListener(customEvent, toDoFunction, false)
+    },
+    trigger: function(element, customEvent) {
+      _desiredElement(element).dispatchEvent(customEvent)
+    }
+  }
+}())
+
+Jaxinator = (function() {
+  return {
+  request: function(parameters) {
+    var ourJax = new XMLHttpRequest();
+    ourJax.onload = parameters['success']
+    ourJax.onerror = parameters['failure']
+    ourJax.open(parameters['method'], parameters['url'])
+    ourJax.send()
+  }
+}})()
 
 SweetSelector
 DOM

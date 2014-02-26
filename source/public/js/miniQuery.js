@@ -2,7 +2,7 @@
  * minQuery
  */
 var miniQuery = (function(){
-  var SweetSelector = (function(){
+  var SweetSelector = function(query){
       var selectId = function(id_name) {
         return document.getElementById(id_name);
       };
@@ -30,12 +30,8 @@ var miniQuery = (function(){
       };
 
 
-    return {
-      select: function(query) {
-        return _select(query);
-      }
-    }
-  }())
+    return _select(query);
+  }
 
   var DOM = (
     function(){
@@ -129,11 +125,19 @@ var miniQuery = (function(){
     };
   }())
 
-  return {
-    SweetSelector: SweetSelector,
-    DOM: DOM,
-    EventDispatcher: EventDispatcher,
-    AjaxWrapper:  AjaxWrapper
+  return function(global) {
+    // SweetSelector: SweetSelector,
+    // DOM: DOM,
+    // EventDispatcher: EventDispatcher,
+    // AjaxWrapper:  AjaxWrapper
+    global.$ = SweetSelector;
+    global.miniQuery = SweetSelector;
   }
 
-}())
+}());
+
+
+
+(function(global, miniQuery) {
+  miniQuery(global);
+}(window, miniQuery));

@@ -1,6 +1,6 @@
 window.onload=function(){
-  miniQuery.EventDispatcher.on('.klass', 'shadi', function() { console.log("awesome") });
-  miniQuery.EventDispatcher.trigger('.klass', 'shadi');
+  // miniQuery.EventDispatcher.on('.klass', 'shadi', function() { console.log("awesome") });
+  // miniQuery.EventDispatcher.trigger('.klass', 'shadi');
 
   // AjaxWrapper.request({
   //   url: '/',
